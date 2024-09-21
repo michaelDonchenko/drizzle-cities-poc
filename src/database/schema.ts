@@ -6,6 +6,7 @@ import {
   varchar,
   real,
 } from 'drizzle-orm/pg-core';
+import { InferSelectModel, InferInsertModel } from 'drizzle-orm';
 
 export const users = pgTable('users', {
   id: serial('id').primaryKey(),
@@ -21,3 +22,6 @@ export const cities = pgTable('cities', {
   lng: real('lng'),
   country: text('country'),
 });
+
+export type NewCity = InferInsertModel<typeof cities>;
+export type SelectedCity = InferSelectModel<typeof cities>;
