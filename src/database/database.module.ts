@@ -12,7 +12,7 @@ import { NodePgDatabase } from 'drizzle-orm/node-postgres';
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
         const connectionString = configService.get<string>('DATABASE_URL');
-        const pool = new Pool({
+        const pool: Pool = new Pool({
           connectionString,
         });
 
