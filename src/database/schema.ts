@@ -6,7 +6,7 @@ import {
   varchar,
   real,
 } from 'drizzle-orm/pg-core';
-import { InferSelectModel, InferInsertModel } from 'drizzle-orm';
+import { InferSelectModel } from 'drizzle-orm';
 
 export const users = pgTable('users', {
   id: serial('id').primaryKey(),
@@ -15,7 +15,7 @@ export const users = pgTable('users', {
 });
 
 export const cities = pgTable('cities', {
-  id: uuid('id').primaryKey(),
+  id: uuid('id').primaryKey().defaultRandom(),
   city_name: varchar('city_name', { length: 255 }),
   city_ascii: text('city_ascii'),
   lat: real('lat'),
@@ -23,5 +23,4 @@ export const cities = pgTable('cities', {
   country: text('country'),
 });
 
-export type NewCity = InferInsertModel<typeof cities>;
 export type SelectedCity = InferSelectModel<typeof cities>;

@@ -32,7 +32,8 @@ export class DatabaseService {
       country: csvCity.country,
     }));
 
+    const sliced = cities.slice(0, 100);
 
-    await this.db.insert(schema.cities).values(cities as schema.SelectedCity[]);
+    await this.db.insert(schema.cities).values(sliced);
   }
 }
