@@ -9,4 +9,9 @@ export class AppController {
   getHello() {
     return this.appService.getUsers();
   }
+
+  @Get('cities')
+  getCities() {
+    return this.appService.getCitiesWithUsers()
+  }
 }

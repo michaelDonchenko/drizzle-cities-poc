@@ -5,8 +5,11 @@ import {
   uuid,
   varchar,
   real,
+  integer,
 } from 'drizzle-orm/pg-core';
-import { InferSelectModel } from 'drizzle-orm';
+import { InferSelectModel, relations } from 'drizzle-orm';
+
+export type SelectedCity = InferSelectModel<typeof cities>;
 
 export const users = pgTable('users', {
   id: serial('id').primaryKey(),
@@ -23,4 +26,31 @@ export const cities = pgTable('cities', {
   country: text('country'),
 });
 
-export type SelectedCity = InferSelectModel<typeof cities>;
+export const usersRelations = relations(users, ({ many }) => ({
+  userCities: many(userCities),
+}));
+
+export const citiesRelations = relations(cities, ({ many }) => ({
+  userCities: many(userCities),
+}));
+
+export const userCities = pgTable('user_cities', {
+  id: serial('id').primaryKey(),
+  user_id: integer('user_id')
+    .notNull()
+    .references(() => users.id),
+  city_id: uuid('city_id')
+    .notNull()
+    .references(() => cities.id),
+});
+
+export const userCitiesRelations = relations(userCities, ({ one }) => ({
+  user: one(users, {
+    fields: [userCities.user_id],
+    references: [users.id],
+  }),
+  city: one(cities, {
+    fields: [userCities.city_id],
+    references: [cities.id],
+  }),
+}));
